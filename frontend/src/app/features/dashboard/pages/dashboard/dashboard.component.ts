@@ -4,8 +4,8 @@ import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-import { DashboardService } from '../../services/dashboard.service';
-import { DashboardMetrics } from '../../models/lead.model';
+import { DashboardService } from '../../../../core/services/dashboard.service';
+import { DashboardMetrics } from '../../../../core/models/lead.model';
 
 @Component({
   selector: 'app-dashboard',

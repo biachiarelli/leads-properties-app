@@ -6,9 +6,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { Select } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { Textarea } from 'primeng/textarea';
-import { LeadService } from '../../../services/lead.service';
-import { Property, Lead } from '../../../models/lead.model';
-import { PropertyService } from '../../../services/property.service';
+import { LeadService } from '../../../../core/services/lead.service';
+import { Property, Lead } from '../../../../core/models/lead.model';
+import { PropertyService } from '../../../../core/services/property.service';
 
 @Component({
   selector: 'app-property-form',

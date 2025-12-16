@@ -1,0 +1,63 @@
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  h1 {
+    margin: 0.5rem 0 0 0;
+    font-size: 2rem;
+    color: var(--text-color);
+  }
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .stat-icon {
+    font-size: 2rem;
+    color: var(--primary-color);
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: var(--text-color-secondary);
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+  }
+}
+
+.field {
+  margin-bottom: 1rem;
+
+  .field-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-color-secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  .field-value {
+    font-size: 1rem;
+    color: var(--text-color);
+  }
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-color);
+  padding: 1rem 1.5rem;
+}

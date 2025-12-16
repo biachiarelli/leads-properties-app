@@ -57,17 +57,16 @@
     <ng-template pTemplate="header">
       <tr>
         <th>Nome</th>
-        <th>CPF</th>
         <th>Status</th>
         <th>Município</th>
         <th>Propriedades</th>
+        <th>Área Total (ha)</th>
         <th>Ações</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-lead>
       <tr>
         <td>{{ lead.nome }}</td>
-        <td>{{ lead.cpf | slice : 0 : 3 }}.{{ lead.cpf | slice : 3 : 6 }}.{{ lead.cpf | slice : 6 : 9 }}-{{ lead.cpf | slice : 9 : 11 }}</td>
         <td>
           <p-tag
             [severity]="getStatusSeverity(lead.status)"
@@ -78,8 +77,16 @@
         <td>
           <span *ngIf="lead.properties && lead.properties.length > 0">
             {{ lead.properties.length }}
+          </span>
+          <span *ngIf="!lead.properties || lead.properties.length === 0">
+            0
+          </span>
+        </td>
+        <td>
+          <span *ngIf="lead.properties && lead.properties.length > 0">
+            {{ getTotalArea(lead) | number : '1.2-2' }}
             <i
-              *ngIf="isPrioritario(lead)"
+              *ngIf="isPriority(lead)"
               class="pi pi-star ml-2"
               style="color: gold"
               pTooltip="Lead Prioritário (> 100 ha)"
@@ -90,6 +97,14 @@
           </span>
         </td>
         <td>
+          <p-button
+            icon="pi pi-eye"
+            [rounded]="true"
+            [text]="true"
+            severity="secondary"
+            (onClick)="viewLead(lead.id!)"
+            pTooltip="Ver detalhes"
+          ></p-button>
           <p-button
             icon="pi pi-pencil"
             [rounded]="true"

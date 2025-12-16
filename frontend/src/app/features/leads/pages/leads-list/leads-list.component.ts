@@ -10,9 +10,11 @@ import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { LeadService } from '../../../services/lead.service';
-import { Lead, LeadStatus } from '../../../models/lead.model';
-import { LeadFormComponent } from '../lead-form/lead-form.component';
+import { LeadService } from '../../../../core/services/lead.service';
+import { Lead, LeadStatus } from '../../../../core/models/lead.model';
+import { LeadFormComponent } from '../../components/lead-form/lead-form.component';
+import { isPriorityLead, getTotalArea } from '../../../../shared/utils/property.utils';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-leads-list',
@@ -57,7 +59,8 @@ export class LeadsListComponent implements OnInit {
   constructor(
     private leadService: LeadService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -92,6 +95,10 @@ export class LeadsListComponent implements OnInit {
   openNew(): void {
     this.selectedLead = null;
     this.displayDialog = true;
+  }
+
+  viewLead(leadId: string): void {
+    this.router.navigate(['/leads', leadId]);
   }
 
   editLead(lead: Lead): void {
@@ -178,18 +185,11 @@ export class LeadsListComponent implements OnInit {
   }
 
   getTotalArea(lead: Lead): number {
-    if (!lead.properties || lead.properties.length === 0) {
-      return 0;
-    }
-    
-    return lead.properties.reduce(
-      (sum, p) => sum + Number(p.areaHectares || 0),
-      0
-    );
+    return getTotalArea(lead);
   }
 
-  isPrioritario(lead: Lead): boolean {
-    return this.getTotalArea(lead) >= 100;
+  isPriority(lead: Lead): boolean {
+    return isPriorityLead(lead);
   }
 }
 

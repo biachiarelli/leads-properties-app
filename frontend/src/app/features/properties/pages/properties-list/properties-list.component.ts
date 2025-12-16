@@ -10,9 +10,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { TagModule } from 'primeng/tag';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { PropertyService } from '../../../services/property.service';
-import { Property } from '../../../models/lead.model';
-import { PropertyFormComponent } from '../property-form/property-form.component';
+import { PropertyService } from '../../../../core/services/property.service';
+import { Property } from '../../../../core/models/lead.model';
+import { PropertyFormComponent } from '../../components/property-form/property-form.component';
+import { isPriorityArea } from '../../../../shared/utils/property.utils';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-properties-list',
@@ -46,7 +48,8 @@ export class PropertiesListComponent implements OnInit {
   constructor(
     private propertyService: PropertyService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -80,6 +83,10 @@ export class PropertiesListComponent implements OnInit {
   openNew(): void {
     this.selectedProperty = null;
     this.displayDialog = true;
+  }
+
+  viewProperty(propertyId: string): void {
+    this.router.navigate(['/properties', propertyId]);
   }
 
   editProperty(property: Property): void {
@@ -133,7 +140,7 @@ export class PropertiesListComponent implements OnInit {
   }
 
   isPriority(area: number): boolean {
-    return area > 100;
+    return isPriorityArea(area);
   }
 }
 

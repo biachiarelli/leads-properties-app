@@ -10,7 +10,19 @@
 
   <!-- Filters -->
   <div class="grid mb-4">
-    <div class="col-12 md:col-6">
+    
+    <div class="col-12 md:col-3">
+        <input
+          pInputText
+          type="text"
+          [(ngModel)]="filterCulture"
+          (input)="loadProperties()"
+          placeholder="Pesquisar por lead"
+          class="w-full"
+        />
+    </div>
+    
+    <div class="col-12 md:col-3">
         <input
           pInputText
           type="text"
@@ -20,7 +32,17 @@
           class="w-full"
         />
     </div>
-    <div class="col-12 md:col-6">
+    <div class="col-12 md:col-3">
+        <input
+          pInputText
+          type="text"
+          [(ngModel)]="filterCulture"
+          (input)="loadProperties()"
+          placeholder="Pesquisar por município"
+          class="w-full"
+        />
+    </div>
+    <div class="col-12 md:col-3">
       <p-inputNumber
         [(ngModel)]="filterMinArea"
         (onInput)="loadProperties()"
@@ -46,8 +68,8 @@
       <tr>
         <th>Lead</th>
         <th>Cultura</th>
+        <th>Município</th>
         <th>Área (ha)</th>
-        <th>Prioidade</th>
         <th>Ações</th>
       </tr>
     </ng-template>
@@ -55,24 +77,31 @@
       <tr>
         <td>{{ property.lead?.nome || '-' }}</td>
         <td>{{ property.culture }}</td>
-        <td>{{ property.areaHectares | number : '1.2-2' }}</td>
-        <td>
-          <p-tag
+        <td>{{ property.lead?.municipio }}</td>
+        <td>{{ property.areaHectares | number : '1.2-2' }}
+          <i
             *ngIf="isPriority(property.areaHectares)"
-            severity="warn"
-            value="Prioridade"
-            icon="pi pi-star"
-          ></p-tag>
-          <span *ngIf="!isPriority(property.areaHectares)">Normal</span>
+            class="pi pi-star ml-2"
+            style="color: gold"
+            pTooltip="Lead Prioritário (> 100 ha)"
+          ></i>
         </td>
         <td>
+          <p-button
+            icon="pi pi-eye"
+            [rounded]="true"
+            [text]="true"
+            severity="secondary"
+            (onClick)="viewProperty(property.id!)"
+            pTooltip="Ver detalhes"
+          ></p-button>
           <p-button
             icon="pi pi-pencil"
             [rounded]="true"
             [text]="true"
             severity="info"
             (onClick)="editProperty(property)"
-            pTooltip="Edit"
+            pTooltip="Editar"
           ></p-button>
           <p-button
             icon="pi pi-trash"
@@ -80,14 +109,14 @@
             [text]="true"
             severity="danger"
             (onClick)="deleteProperty(property)"
-            pTooltip="Delete"
+            pTooltip="Excluir"
           ></p-button>
         </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="5" class="text-center">No properties found</td>
+        <td colspan="5" class="text-center">Nenhuma propriedade encontrada</td>
       </tr>
     </ng-template>
   </p-table>

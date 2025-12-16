@@ -6,8 +6,8 @@ import { Textarea } from 'primeng/textarea';
 import { Select } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { InputMaskModule } from 'primeng/inputmask';
-import { LeadService } from '../../../services/lead.service';
-import { Lead, LeadStatus } from '../../../models/lead.model';
+import { LeadService } from '../../../../core/services/lead.service';
+import { Lead, LeadStatus } from '../../../../core/models/lead.model';
 
 @Component({
   selector: 'app-lead-form',

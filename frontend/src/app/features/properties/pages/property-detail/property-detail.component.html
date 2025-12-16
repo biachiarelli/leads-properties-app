@@ -1,0 +1,156 @@
+<div class="container">
+  <!-- Header -->
+  <div class="card-header">
+    <div>
+      <p-button
+        icon="pi pi-arrow-left"
+        [text]="true"
+        (onClick)="goBack()"
+        label="Voltar"
+      ></p-button>
+      <h1 *ngIf="property">Propriedade - {{ property.culture }}</h1>
+    </div>
+    <p-button
+      *ngIf="property"
+      label="Editar"
+      icon="pi pi-pencil"
+      (onClick)="editProperty()"
+    ></p-button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-center p-5">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!loading && property">
+    <!-- Info Cards -->
+    <div class="grid mb-4">
+      <div class="col-12 md:col-4">
+        <p-card>
+          <div class="stat-card">
+            <i class="pi pi-map stat-icon"></i>
+            <div>
+              <div class="stat-label">Cultura</div>
+              <div class="stat-value">{{ property.culture }}</div>
+            </div>
+          </div>
+        </p-card>
+      </div>
+
+      <div class="col-12 md:col-4">
+        <p-card>
+          <div class="stat-card">
+            <i class="pi pi-chart-bar stat-icon"></i>
+            <div>
+              <div class="stat-label">Área</div>
+              <div class="stat-value">
+                {{ property.areaHectares | number : '1.2-2' }} ha
+              </div>
+            </div>
+          </div>
+        </p-card>
+      </div>
+
+      <div class="col-12 md:col-4">
+        <p-card>
+          <div class="stat-card">
+            <i class="pi pi-star stat-icon"></i>
+            <div>
+              <div class="stat-label">Prioridade</div>
+              <div class="stat-value">
+                <p-tag
+                  *ngIf="isPriority()"
+                  value="Prioridade"
+                  severity="warn"
+                  icon="pi pi-star"
+                ></p-tag>
+                <span *ngIf="!isPriority()">Normal</span>
+              </div>
+            </div>
+          </div>
+        </p-card>
+      </div>
+    </div>
+
+    <!-- Informações Gerais -->
+    <p-card class="mb-4">
+      <ng-template pTemplate="header">
+        <div class="card-title">Informações Gerais</div>
+      </ng-template>
+      <div class="grid">
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label class="field-label">Cultura</label>
+            <div class="field-value">{{ property.culture }}</div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label class="field-label">Área (hectares)</label>
+            <div class="field-value">{{ property.areaHectares | number : '1.2-2' }} ha</div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label class="field-label">Data de Cadastro</label>
+            <div class="field-value">
+              {{ property.createdAt | date : 'dd/MM/yyyy HH:mm' }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label class="field-label">Última Atualização</label>
+            <div class="field-value">
+              {{ property.updatedAt | date : 'dd/MM/yyyy HH:mm' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Lead Associado -->
+    <p-card *ngIf="property.lead">
+      <ng-template pTemplate="header">
+        <div class="card-title">Lead Associado</div>
+      </ng-template>
+      <div class="grid">
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label class="field-label">Nome</label>
+            <div class="field-value">{{ property.lead.nome }}</div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label class="field-label">CPF</label>
+            <div class="field-value">
+              {{ property.lead.cpf | slice : 0 : 3 }}.{{ property.lead.cpf | slice : 3 : 6 }}.{{ property.lead.cpf | slice : 6 : 9 }}-{{ property.lead.cpf | slice : 9 : 11 }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label class="field-label">Município</label>
+            <div class="field-value">{{ property.lead.municipio || 'Não informado' }}</div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <p-button
+            label="Ver detalhes do lead"
+            icon="pi pi-eye"
+            (onClick)="viewLead()"
+          ></p-button>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</div>

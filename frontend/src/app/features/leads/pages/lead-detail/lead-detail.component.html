@@ -1,0 +1,189 @@
+<div class="container">
+  <!-- Header -->
+  <div class="card-header">
+    <div>
+      <p-button
+        icon="pi pi-arrow-left"
+        [text]="true"
+        (onClick)="goBack()"
+        label="Voltar"
+      ></p-button>
+      <h1 *ngIf="lead">{{ lead.nome }}</h1>
+    </div>
+    <p-button
+      *ngIf="lead"
+      label="Editar"
+      icon="pi pi-pencil"
+      (onClick)="editLead()"
+    ></p-button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-center p-5">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!loading && lead">
+    <!-- Info Cards -->
+    <div class="grid mb-4">
+      <div class="col-12 md:col-3">
+        <p-card>
+          <div class="stat-card">
+            <i class="pi pi-user stat-icon"></i>
+            <div>
+              <div class="stat-label">Status</div>
+              <p-tag
+                [value]="getStatusLabel(lead.status)"
+                [severity]="getStatusSeverity(lead.status)"
+              ></p-tag>
+            </div>
+          </div>
+        </p-card>
+      </div>
+
+      <div class="col-12 md:col-3">
+        <p-card>
+          <div class="stat-card">
+            <i class="pi pi-map-marker stat-icon"></i>
+            <div>
+              <div class="stat-label">Município</div>
+              <div class="stat-value">{{ lead.municipio || 'Não informado' }}</div>
+            </div>
+          </div>
+        </p-card>
+      </div>
+
+      <div class="col-12 md:col-3">
+        <p-card>
+          <div class="stat-card">
+            <i class="pi pi-map stat-icon"></i>
+            <div>
+              <div class="stat-label">Propriedades</div>
+              <div class="stat-value">{{ lead.properties?.length || 0 }}</div>
+            </div>
+          </div>
+        </p-card>
+      </div>
+
+      <div class="col-12 md:col-3">
+        <p-card>
+          <div class="stat-card">
+            <i class="pi pi-chart-bar stat-icon"></i>
+            <div>
+              <div class="stat-label">Área Total</div>
+              <div class="stat-value">
+                {{ getTotalArea() | number : '1.2-2' }} ha
+                <p-tag
+                  *ngIf="isPriority()"
+                  value="Prioridade"
+                  severity="warn"
+                  icon="pi pi-star"
+                  class="ml-2"
+                ></p-tag>
+              </div>
+            </div>
+          </div>
+        </p-card>
+      </div>
+    </div>
+
+    <!-- Informações Gerais -->
+    <p-card class="mb-4">
+      <ng-template pTemplate="header">
+        <div class="card-title">Informações Gerais</div>
+      </ng-template>
+      <div class="grid">
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label class="field-label">Nome Completo</label>
+            <div class="field-value">{{ lead.nome }}</div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label class="field-label">CPF</label>
+            <div class="field-value">
+              {{ lead.cpf | slice : 0 : 3 }}.{{ lead.cpf | slice : 3 : 6 }}.{{ lead.cpf | slice : 6 : 9 }}-{{ lead.cpf | slice : 9 : 11 }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label class="field-label">Município</label>
+            <div class="field-value">{{ lead.municipio || 'Não informado' }}</div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label class="field-label">Data de Cadastro</label>
+            <div class="field-value">
+              {{ lead.createdAt | date : 'dd/MM/yyyy HH:mm' }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="field">
+            <label class="field-label">Comentários</label>
+            <div class="field-value">{{ lead.comentarios || 'Nenhum comentário' }}</div>
+          </div>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Propriedades -->
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="card-title">Propriedades ({{ lead.properties?.length || 0 }})</div>
+      </ng-template>
+      <p-table
+        [value]="lead.properties || []"
+        [paginator]="true"
+        [rows]="10"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Cultura</th>
+            <th>Área (ha)</th>
+            <th>Prioridade</th>
+            <th>Ações</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-property>
+          <tr>
+            <td>{{ property.culture }}</td>
+            <td>{{ property.areaHectares | number : '1.2-2' }}</td>
+            <td>
+              <p-tag
+                *ngIf="property.areaHectares > 100"
+                value="Prioridade"
+                severity="warn"
+                icon="pi pi-star"
+              ></p-tag>
+              <span *ngIf="property.areaHectares <= 100">Normal</span>
+            </td>
+            <td>
+              <p-button
+                icon="pi pi-eye"
+                [rounded]="true"
+                [text]="true"
+                severity="info"
+                (onClick)="viewProperty(property.id!)"
+                pTooltip="Ver detalhes"
+              ></p-button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="4" class="text-center">Nenhuma propriedade cadastrada</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+</div>
