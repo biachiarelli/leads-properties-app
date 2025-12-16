@@ -8,14 +8,13 @@
     ></p-button>
   </div>
 
-  <!-- Filters -->
   <div class="grid mb-4">
     
     <div class="col-12 md:col-3">
         <input
           pInputText
           type="text"
-          [(ngModel)]="filterCulture"
+          [(ngModel)]="filterLead"
           (input)="loadProperties()"
           placeholder="Pesquisar por lead"
           class="w-full"
@@ -36,7 +35,7 @@
         <input
           pInputText
           type="text"
-          [(ngModel)]="filterCulture"
+          [(ngModel)]="filterMunicipio"
           (input)="loadProperties()"
           placeholder="Pesquisar por município"
           class="w-full"
@@ -54,7 +53,6 @@
     </div>
   </div>
 
-  <!-- Table -->
   <p-table
     [value]="properties"
     [loading]="loading"
@@ -121,7 +119,6 @@
     </ng-template>
   </p-table>
 
-  <!-- Form Dialog -->
   <p-dialog
     [(visible)]="displayDialog"
     [header]="

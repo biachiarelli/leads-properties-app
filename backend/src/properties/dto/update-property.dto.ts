@@ -7,7 +7,7 @@ export class UpdatePropertyDto {
 
   @IsString()
   @IsOptional()
-  cultura?: string;
+  culture?: string;
 
   @IsNumber()
   @Min(0)

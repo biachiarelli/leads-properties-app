@@ -48,7 +48,7 @@ export class LeadsListComponent implements OnInit {
   filterMunicipio = '';
 
   statusOptions = [
-    { label: 'Todos', value: null },
+    { label: 'Todos os status', value: null },
     { label: 'Novo', value: LeadStatus.NOVO },
     { label: 'Contato Inicial', value: LeadStatus.CONTATO_INICIAL },
     { label: 'Em Negociação', value: LeadStatus.EM_NEGOCIACAO },

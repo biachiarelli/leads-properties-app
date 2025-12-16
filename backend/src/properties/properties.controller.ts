@@ -27,8 +27,14 @@ export class PropertiesController {
     @Query('leadId') leadId?: string,
     @Query('culture') culture?: string,
     @Query('minArea') minArea?: number,
+    @Query('municipio') municipio?: string,
   ) {
-    return this.propertiesService.findAll({ leadId, culture, minArea });
+    return this.propertiesService.findAll({
+      leadId,
+      culture,
+      minArea,
+      municipio,
+    });
   }
 
   @Get(':id')

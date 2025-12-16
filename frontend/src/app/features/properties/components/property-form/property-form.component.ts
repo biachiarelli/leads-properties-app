@@ -73,8 +73,14 @@ export class PropertyFormComponent implements OnInit, OnChanges {
 
   onSubmit(): void {
     if (this.property?.id) {
+      const updateData = {
+        leadId: this.formData.leadId,
+        culture: this.formData.culture,
+        areaHectares: Number(this.formData.areaHectares),
+      };
+
       this.propertyService
-        .updateProperty(this.property.id, this.formData)
+        .updateProperty(this.property.id, updateData)
         .subscribe({
           next: () => {
             this.save.emit();
@@ -84,7 +90,14 @@ export class PropertyFormComponent implements OnInit, OnChanges {
           },
         });
     } else {
-      this.propertyService.createProperty(this.formData).subscribe({
+      // Para criar, enviar apenas os campos necessários
+      const createData = {
+        leadId: this.formData.leadId,
+        culture: this.formData.culture,
+        areaHectares: Number(this.formData.areaHectares),
+      };
+
+      this.propertyService.createProperty(createData).subscribe({
         next: () => {
           this.save.emit();
         },

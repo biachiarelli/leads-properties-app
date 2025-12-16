@@ -22,7 +22,7 @@ import { Property } from './entities/property.entity';
       password: process.env.DATABASE_PASSWORD || 'postgres',
       database: process.env.DATABASE_NAME || 'leads_db',
       entities: [Lead, Property],
-      synchronize: true, // Em produção, usar migrations
+      synchronize: true,
       logging: true,
     }),
     LeadsModule,

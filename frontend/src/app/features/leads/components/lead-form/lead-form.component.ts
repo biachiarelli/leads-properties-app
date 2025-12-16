@@ -65,7 +65,16 @@ export class LeadFormComponent implements OnChanges {
 
   onSubmit(): void {
     if (this.lead?.id) {
-      this.leadService.updateLead(this.lead.id, this.formData).subscribe({
+      // Enviar apenas os campos necessários para o update
+      const updateData = {
+        nome: this.formData.nome,
+        cpf: this.formData.cpf,
+        status: this.formData.status,
+        comentarios: this.formData.comentarios,
+        municipio: this.formData.municipio,
+      };
+
+      this.leadService.updateLead(this.lead.id, updateData).subscribe({
         next: () => {
           this.save.emit();
         },
@@ -74,7 +83,16 @@ export class LeadFormComponent implements OnChanges {
         },
       });
     } else {
-      this.leadService.createLead(this.formData).subscribe({
+      // Para criar, enviar apenas os campos necessários
+      const createData = {
+        nome: this.formData.nome,
+        cpf: this.formData.cpf,
+        status: this.formData.status,
+        comentarios: this.formData.comentarios,
+        municipio: this.formData.municipio,
+      };
+
+      this.leadService.createLead(createData).subscribe({
         next: () => {
           this.save.emit();
         },

@@ -16,6 +16,7 @@ export class PropertyService {
     leadId?: string;
     culture?: string;
     minArea?: number;
+    municipio?: string;
   }): Observable<Property[]> {
     let params = new HttpParams();
 
@@ -27,6 +28,9 @@ export class PropertyService {
     }
     if (filters?.minArea) {
       params = params.set('minArea', filters.minArea.toString());
+    }
+    if (filters?.municipio) {
+      params = params.set('municipio', filters.municipio);
     }
 
     return this.http.get<Property[]>(this.apiUrl, { params });

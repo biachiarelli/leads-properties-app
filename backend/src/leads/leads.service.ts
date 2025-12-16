@@ -18,10 +18,8 @@ export class LeadsService {
   ) {}
 
   async create(createLeadDto: CreateLeadDto): Promise<Lead> {
-    // Remove formatação do CPF
     const cpfLimpo = createLeadDto.cpf.replace(/\D/g, '');
 
-    // Verifica se CPF já existe
     const existingLead = await this.leadRepository.findOne({
       where: { cpf: cpfLimpo },
     });
@@ -82,8 +80,7 @@ export class LeadsService {
 
     if (updateLeadDto.cpf) {
       const cpfLimpo = updateLeadDto.cpf.replace(/\D/g, '');
-      
-      // Verifica se o novo CPF já existe em outro lead
+
       const existingLead = await this.leadRepository.findOne({
         where: { cpf: cpfLimpo },
       });
@@ -104,4 +101,3 @@ export class LeadsService {
     await this.leadRepository.remove(lead);
   }
 }
-

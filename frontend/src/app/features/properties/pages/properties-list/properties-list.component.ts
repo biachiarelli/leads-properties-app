@@ -44,6 +44,8 @@ export class PropertiesListComponent implements OnInit {
 
   filterCulture = '';
   filterMinArea: number | null = null;
+  filterLead = '';
+  filterMunicipio = '';
 
   constructor(
     private propertyService: PropertyService,
@@ -62,6 +64,9 @@ export class PropertiesListComponent implements OnInit {
 
     if (this.filterCulture) filters.culture = this.filterCulture;
     if (this.filterMinArea) filters.minArea = this.filterMinArea;
+    if (this.filterLead) filters.leadId = this.filterLead;
+    if (this.filterMunicipio) filters.municipio = this.filterMunicipio;
+
 
     this.propertyService.getProperties(filters).subscribe({
       next: (data) => {
@@ -72,8 +77,8 @@ export class PropertiesListComponent implements OnInit {
         console.error('Error loading properties:', error);
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: 'Error loading properties',
+          summary: 'Erro',
+          detail: 'Erro ao carregar propriedades',
         });
         this.loading = false;
       },
@@ -106,7 +111,7 @@ export class PropertiesListComponent implements OnInit {
             next: () => {
               this.messageService.add({
                 severity: 'success',
-                summary: 'Success',
+                summary: 'Sucesso',
                 detail: 'Propriedade excluída com sucesso',
               });
               this.loadProperties();
@@ -130,8 +135,8 @@ export class PropertiesListComponent implements OnInit {
     this.loadProperties();
     this.messageService.add({
       severity: 'success',
-      summary: 'Success',
-      detail: 'Property saved successfully',
+      summary: 'Sucesso',
+      detail: 'Propriedade alterada com sucesso',
     });
   }
 

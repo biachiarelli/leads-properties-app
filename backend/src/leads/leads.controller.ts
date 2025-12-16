@@ -50,4 +50,3 @@ export class LeadsController {
     return this.leadsService.remove(id);
   }
 }
-

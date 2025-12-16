@@ -6,11 +6,13 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { DashboardService } from '../../../../core/services/dashboard.service';
 import { DashboardMetrics } from '../../../../core/models/lead.model';
+import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, CardModule, ChartModule, TableModule, TagModule],
+  imports: [CommonModule, CardModule, ChartModule, TableModule, TagModule, ButtonModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
@@ -20,7 +22,7 @@ export class DashboardComponent implements OnInit {
   municipioChartData: any;
   chartOptions: any;
 
-  constructor(private dashboardService: DashboardService) {}
+  constructor(private dashboardService: DashboardService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadMetrics();
@@ -95,6 +97,11 @@ export class DashboardComponent implements OnInit {
       perdido: 'Perdido',
     };
     return statusMap[status] || status;
+  }
+
+
+  viewLead(leadId: string): void {
+    this.router.navigate(['/leads', leadId]);
   }
 }
 

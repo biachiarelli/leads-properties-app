@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Lead } from '../entities/lead.entity';
 import { Property } from '../entities/property.entity';
-import { LeadStatus } from '../common/enums/lead-status.enum';
 
 export interface DashboardMetrics {
   totalLeads: number;
@@ -33,10 +32,8 @@ export class DashboardService {
   ) {}
 
   async getMetrics(): Promise<DashboardMetrics> {
-    // Total de leads
     const totalLeads = await this.leadRepository.count();
 
-    // Leads por status
     const leadsByStatus = await this.leadRepository
       .createQueryBuilder('lead')
       .select('lead.status', 'status')
@@ -44,7 +41,6 @@ export class DashboardService {
       .groupBy('lead.status')
       .getRawMany();
 
-    // Leads por município
     const leadsByMunicipio = await this.leadRepository
       .createQueryBuilder('lead')
       .select('lead.municipio', 'municipio')

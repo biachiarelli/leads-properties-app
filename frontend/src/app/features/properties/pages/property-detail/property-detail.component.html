@@ -1,6 +1,5 @@
 <div class="container">
-  <!-- Header -->
-  <div class="card-header">
+  <div class="container-header">
     <div>
       <p-button
         icon="pi pi-arrow-left"
@@ -10,30 +9,28 @@
       ></p-button>
       <h1 *ngIf="property">Propriedade - {{ property.culture }}</h1>
     </div>
-    <p-button
-      *ngIf="property"
-      label="Editar"
-      icon="pi pi-pencil"
-      (onClick)="editProperty()"
-    ></p-button>
+    
+    <p-tag
+      *ngIf="isPriority()"
+      value="Prioridade"
+      severity="warn"
+      icon="pi pi-star"
+    ></p-tag>
   </div>
 
-  <!-- Loading -->
   <div *ngIf="loading" class="text-center p-5">
     <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
   </div>
 
-  <!-- Content -->
   <div *ngIf="!loading && property">
-    <!-- Info Cards -->
     <div class="grid mb-4">
       <div class="col-12 md:col-4">
         <p-card>
           <div class="stat-card">
-            <i class="pi pi-map stat-icon"></i>
+            <i class="pi pi-box stat-card--icon"></i>
             <div>
-              <div class="stat-label">Cultura</div>
-              <div class="stat-value">{{ property.culture }}</div>
+              <div class="stat-card--label">Cultura</div>
+              <div class="stat-card--value">{{ property.culture }}</div>
             </div>
           </div>
         </p-card>
@@ -42,10 +39,10 @@
       <div class="col-12 md:col-4">
         <p-card>
           <div class="stat-card">
-            <i class="pi pi-chart-bar stat-icon"></i>
+            <i class="pi pi-chart-bar stat-card--icon"></i>
             <div>
-              <div class="stat-label">Área</div>
-              <div class="stat-value">
+              <div class="stat-card--label">Área</div>
+              <div class="stat-card--value">
                 {{ property.areaHectares | number : '1.2-2' }} ha
               </div>
             </div>
@@ -56,29 +53,30 @@
       <div class="col-12 md:col-4">
         <p-card>
           <div class="stat-card">
-            <i class="pi pi-star stat-icon"></i>
+            <i class="pi pi-map stat-card--icon"></i>
             <div>
-              <div class="stat-label">Prioridade</div>
-              <div class="stat-value">
-                <p-tag
-                  *ngIf="isPriority()"
-                  value="Prioridade"
-                  severity="warn"
-                  icon="pi pi-star"
-                ></p-tag>
-                <span *ngIf="!isPriority()">Normal</span>
+              <div class="stat-card--label">Muniípio</div>
+              <div class="stat-card--value">
+                {{ property.lead?.municipio || 'Não informado' }}
               </div>
             </div>
           </div>
         </p-card>
-      </div>
+      </div>      
     </div>
 
-    <!-- Informações Gerais -->
     <p-card class="mb-4">
-      <ng-template pTemplate="header">
-        <div class="card-title">Informações Gerais</div>
-      </ng-template>
+      <div class="card-header">
+        <div class="card-header--title">Informações Gerais</div>
+        
+        <p-button
+          *ngIf="property"
+          label="Editar"
+          icon="pi pi-pencil"
+          (onClick)="editProperty()"
+        ></p-button>
+      </div>
+
       <div class="grid">
         <div class="col-12 md:col-6">
           <div class="field">
@@ -112,14 +110,29 @@
           </div>
         </div>
       </div>
+
+      <p-button
+        *ngIf="property"
+        label="Excluir propriedade"
+        icon="pi pi-trash"
+        (onClick)="deleteProperty(property)"
+        severity="danger"
+        variant="text"
+      ></p-button>
     </p-card>
 
-    <!-- Lead Associado -->
     <p-card *ngIf="property.lead">
-      <ng-template pTemplate="header">
-        <div class="card-title">Lead Associado</div>
-      </ng-template>
-      <div class="grid">
+        
+      <div class="card-header">
+        <div class="card-header--title">Lead Associado</div>
+
+        <p-button
+          label="Ver detalhes do lead"
+          icon="pi pi-eye"
+          (onClick)="viewLead()"
+        ></p-button>
+      </div>
+        <div class="grid">
         <div class="col-12 md:col-6">
           <div class="field">
             <label class="field-label">Nome</label>
@@ -142,15 +155,26 @@
             <div class="field-value">{{ property.lead.municipio || 'Não informado' }}</div>
           </div>
         </div>
-
-        <div class="col-12">
-          <p-button
-            label="Ver detalhes do lead"
-            icon="pi pi-eye"
-            (onClick)="viewLead()"
-          ></p-button>
-        </div>
       </div>
     </p-card>
+
+    
+
+    <p-dialog
+      [(visible)]="displayDialog"
+      header="Editar propriedade"
+      [modal]="true"
+      [style]="{ width: '50vw' }"
+      [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
+    >
+      <app-property-form
+        [property]="property"
+        (save)="onSave()"
+        (cancel)="onCancel()"
+      ></app-property-form>
+    </p-dialog>
+
+    <p-confirmDialog></p-confirmDialog>
+    <p-toast></p-toast>
   </div>
 </div>

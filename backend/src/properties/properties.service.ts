@@ -21,6 +21,7 @@ export class PropertiesService {
     leadId?: string;
     culture?: string;
     minArea?: number;
+    municipio?: string;
   }): Promise<Property[]> {
     const where: any = {};
 
@@ -34,6 +35,10 @@ export class PropertiesService {
 
     if (filters?.minArea) {
       where.areaHectares = MoreThan(filters.minArea);
+    }
+
+    if (filters?.municipio) {
+      where.lead = { municipio: filters.municipio };
     }
 
     return this.propertyRepository.find({

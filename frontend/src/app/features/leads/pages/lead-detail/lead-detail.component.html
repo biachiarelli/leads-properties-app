@@ -1,6 +1,5 @@
 <div class="container">
-  <!-- Header -->
-  <div class="card-header">
+  <div class="container-header">
     <div>
       <p-button
         icon="pi pi-arrow-left"
@@ -10,29 +9,26 @@
       ></p-button>
       <h1 *ngIf="lead">{{ lead.nome }}</h1>
     </div>
-    <p-button
-      *ngIf="lead"
-      label="Editar"
-      icon="pi pi-pencil"
-      (onClick)="editLead()"
-    ></p-button>
+    <p-tag
+      *ngIf="isPriority()"
+      value="Prioridade"
+      severity="warn"
+      icon="pi pi-star"
+    ></p-tag>
   </div>
 
-  <!-- Loading -->
   <div *ngIf="loading" class="text-center p-5">
     <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
   </div>
 
-  <!-- Content -->
   <div *ngIf="!loading && lead">
-    <!-- Info Cards -->
     <div class="grid mb-4">
       <div class="col-12 md:col-3">
         <p-card>
           <div class="stat-card">
-            <i class="pi pi-user stat-icon"></i>
+            <i class="pi pi-user stat-card--icon"></i>
             <div>
-              <div class="stat-label">Status</div>
+              <div class="stat-card--label">Status</div>
               <p-tag
                 [value]="getStatusLabel(lead.status)"
                 [severity]="getStatusSeverity(lead.status)"
@@ -45,10 +41,10 @@
       <div class="col-12 md:col-3">
         <p-card>
           <div class="stat-card">
-            <i class="pi pi-map-marker stat-icon"></i>
+            <i class="pi pi-map-marker stat-card--icon"></i>
             <div>
-              <div class="stat-label">Município</div>
-              <div class="stat-value">{{ lead.municipio || 'Não informado' }}</div>
+              <div class="stat-card--label">Município</div>
+              <div class="stat-card--value">{{ lead.municipio || 'Não informado' }}</div>
             </div>
           </div>
         </p-card>
@@ -57,10 +53,10 @@
       <div class="col-12 md:col-3">
         <p-card>
           <div class="stat-card">
-            <i class="pi pi-map stat-icon"></i>
+            <i class="pi pi-map stat-card--icon"></i>
             <div>
-              <div class="stat-label">Propriedades</div>
-              <div class="stat-value">{{ lead.properties?.length || 0 }}</div>
+              <div class="stat-card--label">Propriedades</div>
+              <div class="stat-card--value">{{ lead.properties?.length || 0 }}</div>
             </div>
           </div>
         </p-card>
@@ -69,18 +65,18 @@
       <div class="col-12 md:col-3">
         <p-card>
           <div class="stat-card">
-            <i class="pi pi-chart-bar stat-icon"></i>
+            <i class="pi pi-chart-bar stat-card--icon"></i>
             <div>
-              <div class="stat-label">Área Total</div>
-              <div class="stat-value">
+              <div class="stat-card--label">Área Total</div>
+              <div class="stat-card--value">
                 {{ getTotalArea() | number : '1.2-2' }} ha
-                <p-tag
+
+                <i
                   *ngIf="isPriority()"
-                  value="Prioridade"
-                  severity="warn"
-                  icon="pi pi-star"
-                  class="ml-2"
-                ></p-tag>
+                  class="pi pi-star ml-2"
+                  style="color: gold"
+                  pTooltip="Lead Prioritário (> 100 ha)"
+                ></i>
               </div>
             </div>
           </div>
@@ -88,11 +84,15 @@
       </div>
     </div>
 
-    <!-- Informações Gerais -->
     <p-card class="mb-4">
-      <ng-template pTemplate="header">
-        <div class="card-title">Informações Gerais</div>
-      </ng-template>
+      <div class="card-header">
+        <h2 class="card-header--title">Informações Gerais</h2>
+        <p-button
+          label="Editar"
+          icon="pi pi-pencil"
+          (onClick)="editLead()"
+        ></p-button>
+      </div>
       <div class="grid">
         <div class="col-12 md:col-6">
           <div class="field">
@@ -117,11 +117,21 @@
           </div>
         </div>
 
-        <div class="col-12 md:col-6">
+        <div class="col-12 md:col-4">
           <div class="field">
             <label class="field-label">Data de Cadastro</label>
             <div class="field-value">
               {{ lead.createdAt | date : 'dd/MM/yyyy HH:mm' }}
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label class="field-label">Última Atualização</label>
+            <div class="field-value">
+              {{ lead.updatedAt | date : 'dd/MM/yyyy HH:mm' }}
             </div>
           </div>
         </div>
@@ -133,13 +143,25 @@
           </div>
         </div>
       </div>
+        <p-button
+          label="Excluir lead"
+          icon="pi pi-trash"
+          (onClick)="deleteLead()"
+          severity="danger"
+          variant="text"
+        ></p-button>
     </p-card>
 
-    <!-- Propriedades -->
     <p-card>
-      <ng-template pTemplate="header">
-        <div class="card-title">Propriedades ({{ lead.properties?.length || 0 }})</div>
-      </ng-template>
+      <div class="card-header">
+        <div class="card-header--title">Propriedades ({{ lead.properties?.length || 0 }})</div>
+              
+        <p-button
+          label="Nova Propriedade"
+          icon="pi pi-plus"
+          (onClick)="addProperty()"
+        ></p-button>
+      </div>
       <p-table
         [value]="lead.properties || []"
         [paginator]="true"
@@ -185,5 +207,40 @@
         </ng-template>
       </p-table>
     </p-card>
+
+    
+
+    <p-dialog
+      [(visible)]="displayDialog"
+      header="Editar Lead"
+      [modal]="true"
+      [style]="{ width: '50vw' }"
+      [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
+    >
+      <app-lead-form
+        [lead]="lead"
+        (save)="onSave()"
+        (cancel)="onCancel()"
+      ></app-lead-form>
+    </p-dialog>
+
+  <p-dialog
+    [(visible)]="displayPropertyDialog"
+    header="Nova propriedade"
+    [modal]="true"
+    [style]="{ width: '50vw' }"
+    [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
+  >
+    <app-property-form
+      [property]="defaultProperty"
+      (save)="onSaveProperty()"
+      (cancel)="onCancel()"
+    ></app-property-form>
+  </p-dialog>
+
+    <p-confirmDialog></p-confirmDialog>
+    <p-toast></p-toast>
   </div>
+
+  
 </div>
