@@ -56,12 +56,12 @@ export class DashboardComponent implements OnInit {
 
     // Gráfico de status
     this.statusChartData = {
-      labels: this.metrics.leadsPorStatus.map((item) =>
+      labels: this.metrics.leadsByStatus.map((item) =>
         this.formatStatus(item.status)
       ),
       datasets: [
         {
-          data: this.metrics.leadsPorStatus.map((item) => item.count),
+          data: this.metrics.leadsByStatus.map((item) => item.count),
           backgroundColor: [
             '#42A5F5',
             '#66BB6A',
@@ -75,11 +75,11 @@ export class DashboardComponent implements OnInit {
 
     // Gráfico de municípios
     this.municipioChartData = {
-      labels: this.metrics.leadsPorMunicipio.map((item) => item.municipio),
+      labels: this.metrics.leadsByMunicipio.map((item) => item.municipio),
       datasets: [
         {
           label: 'Leads por Município',
-          data: this.metrics.leadsPorMunicipio.map((item) => item.count),
+          data: this.metrics.leadsByMunicipio.map((item) => item.count),
           backgroundColor: '#42A5F5',
         },
       ],

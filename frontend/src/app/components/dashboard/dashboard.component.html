@@ -15,7 +15,7 @@
           <div class="text-center">
             <i class="pi pi-star text-6xl text-yellow-500"></i>
             <h2 class="text-4xl font-bold mt-3">
-              {{ metrics.leadsPrioritarios.length }}
+              {{ metrics.priorityLeads.length }}
             </h2>
             <p class="text-gray-600">Leads Prioritários</p>
             <small class="text-gray-500">(Área > 100 ha)</small>
@@ -48,7 +48,7 @@
     <div class="col-12">
       <p-card header="Leads Prioritários (Área > 100 hectares)">
         <p-table
-          [value]="metrics.leadsPrioritarios"
+          [value]="metrics.priorityLeads"
           [paginator]="true"
           [rows]="10"
           [tableStyle]="{ 'min-width': '50rem' }"
@@ -58,21 +58,13 @@
               <th>Nome</th>
               <th>Área Total (ha)</th>
               <th>Quantidade de Propriedades</th>
-              <th>Prioridade</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-lead>
             <tr>
               <td>{{ lead.nome }}</td>
               <td>{{ lead.totalAreaHectares | number : '1.2-2' }}</td>
-              <td>{{ lead.quantidadePropriedades }}</td>
-              <td>
-                <p-tag
-                  severity="warn"
-                  value="PRIORITÁRIO"
-                  icon="pi pi-star"
-                ></p-tag>
-              </td>
+              <td>{{ lead.qtdProperties }}</td>
             </tr>
           </ng-template>
         </p-table>

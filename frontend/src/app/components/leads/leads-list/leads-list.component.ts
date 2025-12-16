@@ -104,6 +104,8 @@ export class LeadsListComponent implements OnInit {
       message: `Tem certeza que deseja excluir o lead ${lead.nome}?`,
       header: 'Confirmar Exclusão',
       icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sim, excluir',
+      rejectLabel: 'Cancelar',
       accept: () => {
         if (lead.id) {
           this.leadService.deleteLead(lead.id).subscribe({
@@ -179,6 +181,7 @@ export class LeadsListComponent implements OnInit {
     if (!lead.properties || lead.properties.length === 0) {
       return 0;
     }
+    
     return lead.properties.reduce(
       (sum, p) => sum + Number(p.areaHectares || 0),
       0
@@ -186,7 +189,7 @@ export class LeadsListComponent implements OnInit {
   }
 
   isPrioritario(lead: Lead): boolean {
-    return this.getTotalArea(lead) > 100;
+    return this.getTotalArea(lead) >= 100;
   }
 }
 

@@ -76,8 +76,8 @@
         </td>
         <td>{{ lead.municipio || '-' }}</td>
         <td>
-          <span *ngIf="lead.propriedades && lead.propriedades.length > 0">
-            {{ lead.propriedades.length }}
+          <span *ngIf="lead.properties && lead.properties.length > 0">
+            {{ lead.properties.length }}
             <i
               *ngIf="isPrioritario(lead)"
               class="pi pi-star ml-2"
@@ -85,7 +85,7 @@
               pTooltip="Lead Prioritário (> 100 ha)"
             ></i>
           </span>
-          <span *ngIf="!lead.propriedades || lead.propriedades.length === 0">
+          <span *ngIf="!lead.properties || lead.properties.length === 0">
             0
           </span>
         </td>

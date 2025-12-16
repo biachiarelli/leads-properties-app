@@ -8,25 +8,25 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class PropertyService {
-  private apiUrl = `${environment.apiUrl}/api/propriedades`;
+  private apiUrl = `${environment.apiUrl}/api/properties`;
 
   constructor(private http: HttpClient) {}
 
   getProperties(filters?: {
     leadId?: string;
-    cultura?: string;
-    areaMinima?: number;
+    culture?: string;
+    minArea?: number;
   }): Observable<Property[]> {
     let params = new HttpParams();
 
     if (filters?.leadId) {
       params = params.set('leadId', filters.leadId);
     }
-    if (filters?.cultura) {
-      params = params.set('cultura', filters.cultura);
+    if (filters?.culture) {
+      params = params.set('culture', filters.culture);
     }
-    if (filters?.areaMinima) {
-      params = params.set('areaMinima', filters.areaMinima.toString());
+    if (filters?.minArea) {
+      params = params.set('minArea', filters.minArea.toString());
     }
 
     return this.http.get<Property[]>(this.apiUrl, { params });

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -24,7 +24,7 @@ import { Lead, LeadStatus } from '../../../models/lead.model';
   templateUrl: './lead-form.component.html',
   styleUrls: ['./lead-form.component.scss'],
 })
-export class LeadFormComponent implements OnInit {
+export class LeadFormComponent implements OnChanges {
   @Input() lead: Lead | null = null;
   @Output() save = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
@@ -45,17 +45,26 @@ export class LeadFormComponent implements OnInit {
     { label: 'Perdido', value: LeadStatus.PERDIDO },
   ];
 
-  constructor(private leadService: LeadService) {}
+  constructor(private leadService: LeadService) {} 
 
-  ngOnInit(): void {
-    if (this.lead) {
-      this.formData = { ...this.lead };
+  ngOnChanges(changes: SimpleChanges): void {    if (changes['lead']) {
+      if (this.lead) {
+        this.formData = { ...this.lead };
+      } else {
+        this.formData = {
+          nome: '',
+          cpf: '',
+          status: LeadStatus.NOVO,
+          comentarios: '',
+          municipio: '',
+        };
+      }
     }
   }
 
+
   onSubmit(): void {
     if (this.lead?.id) {
-      // Atualizar
       this.leadService.updateLead(this.lead.id, this.formData).subscribe({
         next: () => {
           this.save.emit();
@@ -65,7 +74,6 @@ export class LeadFormComponent implements OnInit {
         },
       });
     } else {
-      // Criar
       this.leadService.createLead(this.formData).subscribe({
         next: () => {
           this.save.emit();

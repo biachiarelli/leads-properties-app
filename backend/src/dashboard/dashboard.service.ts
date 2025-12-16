@@ -2,24 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Lead } from '../entities/lead.entity';
-import { PropriedadeRural } from '../entities/propriedade-rural.entity';
+import { Property } from '../entities/property.entity';
 import { LeadStatus } from '../common/enums/lead-status.enum';
 
 export interface DashboardMetrics {
   totalLeads: number;
-  leadsPorStatus: {
+  leadsByStatus: {
     status: string;
     count: number;
   }[];
-  leadsPorMunicipio: {
+  leadsByMunicipio: {
     municipio: string;
     count: number;
   }[];
-  leadsPrioritarios: {
+  priorityLeads: {
     id: string;
     nome: string;
     totalAreaHectares: number;
-    quantidadePropriedades: number;
+    qtdProperties: number;
   }[];
 }
 
@@ -28,8 +28,8 @@ export class DashboardService {
   constructor(
     @InjectRepository(Lead)
     private readonly leadRepository: Repository<Lead>,
-    @InjectRepository(PropriedadeRural)
-    private readonly propriedadeRepository: Repository<PropriedadeRural>,
+    @InjectRepository(Property)
+    private readonly propertyRepository: Repository<Property>,
   ) {}
 
   async getMetrics(): Promise<DashboardMetrics> {
@@ -37,7 +37,7 @@ export class DashboardService {
     const totalLeads = await this.leadRepository.count();
 
     // Leads por status
-    const leadsPorStatus = await this.leadRepository
+    const leadsByStatus = await this.leadRepository
       .createQueryBuilder('lead')
       .select('lead.status', 'status')
       .addSelect('COUNT(*)', 'count')
@@ -45,7 +45,7 @@ export class DashboardService {
       .getRawMany();
 
     // Leads por município
-    const leadsPorMunicipio = await this.leadRepository
+    const leadsByMunicipio = await this.leadRepository
       .createQueryBuilder('lead')
       .select('lead.municipio', 'municipio')
       .addSelect('COUNT(*)', 'count')
@@ -56,36 +56,35 @@ export class DashboardService {
       .getRawMany();
 
     // Leads prioritários (com properties > 100 hectares)
-    const leadsPrioritarios = await this.leadRepository
+    const priorityLeads = await this.leadRepository
       .createQueryBuilder('lead')
-      .leftJoinAndSelect('lead.properties', 'propriedade')
+      .leftJoinAndSelect('lead.properties', 'property')
       .select('lead.id', 'id')
       .addSelect('lead.nome', 'nome')
-      .addSelect('SUM(propriedade.area_hectares)', 'total_area_hectares')
-      .addSelect('COUNT(propriedade.id)', 'quantidade_propriedades')
+      .addSelect('SUM(property.area_hectares)', 'total_area_hectares')
+      .addSelect('COUNT(property.id)', 'quantidade_properties')
       .groupBy('lead.id')
       .addGroupBy('lead.nome')
-      .having('SUM(propriedade.area_hectares) > :minArea', { minArea: 100 })
+      .having('SUM(property.area_hectares) > :minArea', { minArea: 100 })
       .orderBy('total_area_hectares', 'DESC')
       .getRawMany();
 
     return {
       totalLeads,
-      leadsPorStatus: leadsPorStatus.map((item) => ({
+      leadsByStatus: leadsByStatus.map((item) => ({
         status: item.status,
         count: parseInt(item.count, 10),
       })),
-      leadsPorMunicipio: leadsPorMunicipio.map((item) => ({
+      leadsByMunicipio: leadsByMunicipio.map((item) => ({
         municipio: item.municipio || 'Não informado',
         count: parseInt(item.count, 10),
       })),
-      leadsPrioritarios: leadsPrioritarios.map((item) => ({
+      priorityLeads: priorityLeads.map((item) => ({
         id: item.id,
         nome: item.nome,
         totalAreaHectares: parseFloat(item.total_area_hectares) || 0,
-        quantidadePropriedades: parseInt(item.quantidade_propriedades, 10),
+        qtdProperties: parseInt(item.quantidade_properties, 10),
       })),
     };
   }
 }
-

@@ -18,13 +18,13 @@
     </div>
 
     <div class="col-12 md:col-6">
-      <label for="cultura" class="block mb-2">Cultura *</label>
+      <label for="culture" class="block mb-2">Cultura *</label>
       <input
-        id="cultura"
+        id="culture"
         type="text"
         pInputText
-        [(ngModel)]="formData.cultura"
-        name="cultura"
+        [(ngModel)]="formData.culture"
+        name="culture"
         placeholder="Ex: Soja, Milho, Café"
         required
         class="w-full"
@@ -44,26 +44,6 @@
         required
         class="w-full"
       ></p-inputNumber>
-    </div>
-
-    <div class="col-12">
-      <label for="geometria" class="block mb-2">
-        Geometria (GeoJSON)
-        <small class="text-gray-500 ml-2">(Opcional)</small>
-      </label>
-      <textarea
-        id="geometria"
-        pTextarea
-        [(ngModel)]="geometriaJson"
-        name="geometria"
-        rows="6"
-        placeholder='{"type": "Point", "coordinates": [-47.123, -23.456]}'
-        class="w-full"
-      ></textarea>
-      <small class="text-gray-500">
-        Exemplo de ponto: {{ '{' }}"type": "Point", "coordinates": [longitude,
-        latitude]{{ '}' }}
-      </small>
     </div>
 
     <div class="col-12 flex justify-content-end gap-2">

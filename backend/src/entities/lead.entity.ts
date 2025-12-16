@@ -7,7 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { LeadStatus } from '../common/enums/lead-status.enum';
-import { PropriedadeRural } from './propriedade-rural.entity';
+import { Property } from './property.entity';
 
 @Entity('leads')
 export class Lead {
@@ -33,10 +33,10 @@ export class Lead {
   @Column({ type: 'varchar', length: 255, nullable: true })
   municipio: string;
 
-  @OneToMany(() => PropriedadeRural, (propriedade) => propriedade.lead, {
+  @OneToMany(() => Property, (propriedade) => propriedade.lead, {
     cascade: true,
   })
-  properties: PropriedadeRural[];
+  properties: Property[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

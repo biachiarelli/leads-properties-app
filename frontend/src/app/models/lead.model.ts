@@ -21,32 +21,30 @@ export interface Lead {
 export interface Property {
   id?: string;
   leadId: string;
-  cultura: string;
+  culture: string;
   areaHectares: number;
-  geometria?: any;
   lead?: Lead;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-// Alias para compatibilidade temporária
-export type PropriedadeRural = Property;
+export type PropertyType = Property;
 
 export interface DashboardMetrics {
   totalLeads: number;
-  leadsPorStatus: {
+  leadsByStatus: {
     status: string;
     count: number;
   }[];
-  leadsPorMunicipio: {
+  leadsByMunicipio: {
     municipio: string;
     count: number;
   }[];
-  leadsPrioritarios: {
+  priorityLeads: {
     id: string;
     nome: string;
     totalAreaHectares: number;
-    quantidadeProperties: number;
+    qtdProperties: number;
   }[];
 }
 

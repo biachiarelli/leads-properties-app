@@ -9,8 +9,8 @@ import {
 } from 'typeorm';
 import { Lead } from './lead.entity';
 
-@Entity('propriedades_rurais')
-export class PropriedadeRural {
+@Entity('properties')
+export class Property {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -24,13 +24,10 @@ export class PropriedadeRural {
   lead: Lead;
 
   @Column({ type: 'varchar', length: 255 })
-  cultura: string;
+  culture: string;
 
   @Column({ name: 'area_hectares', type: 'decimal', precision: 10, scale: 2 })
   areaHectares: number;
-
-  @Column({ type: 'jsonb', nullable: true })
-  geometria: any; // GeoJSON object
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
@@ -38,4 +35,3 @@ export class PropriedadeRural {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }
-

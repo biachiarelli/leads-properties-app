@@ -4,10 +4,10 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LeadsModule } from './leads/leads.module';
-import { PropriedadesModule } from './properties/properties.module';
+import { PropertiesModule } from './properties/properties.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { Lead } from './entities/lead.entity';
-import { PropriedadeRural } from './entities/propriedade-rural.entity';
+import { Property } from './entities/property.entity';
 
 @Module({
   imports: [
@@ -21,12 +21,12 @@ import { PropriedadeRural } from './entities/propriedade-rural.entity';
       username: process.env.DATABASE_USER || 'postgres',
       password: process.env.DATABASE_PASSWORD || 'postgres',
       database: process.env.DATABASE_NAME || 'leads_db',
-      entities: [Lead, PropriedadeRural],
+      entities: [Lead, Property],
       synchronize: true, // Em produção, usar migrations
       logging: true,
     }),
     LeadsModule,
-    PropriedadesModule,
+    PropertiesModule,
     DashboardModule,
   ],
   controllers: [AppController],

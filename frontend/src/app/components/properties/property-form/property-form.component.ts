@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -6,9 +6,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { Select } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { Textarea } from 'primeng/textarea';
-import { PropriedadeService } from '../../../services/propriedade.service';
 import { LeadService } from '../../../services/lead.service';
-import { PropriedadeRural, Lead } from '../../../models/lead.model';
+import { Property, Lead } from '../../../models/lead.model';
+import { PropertyService } from '../../../services/property.service';
 
 @Component({
   selector: 'app-property-form',
@@ -20,42 +20,42 @@ import { PropriedadeRural, Lead } from '../../../models/lead.model';
     InputNumberModule,
     Select,
     ButtonModule,
-    Textarea,
   ],
   templateUrl: './property-form.component.html',
   styleUrls: ['./property-form.component.scss'],
 })
-export class PropertyFormComponent implements OnInit {
-  @Input() propriedade: PropriedadeRural | null = null;
+export class PropertyFormComponent implements OnInit, OnChanges {
+  @Input() property: Property | null = null;
   @Output() save = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
 
-  formData: PropriedadeRural = {
+  formData: Property = {
     leadId: '',
-    cultura: '',
+    culture: '',
     areaHectares: 0,
-    geometria: null,
   };
 
   leads: Lead[] = [];
-  geometriaJson = '';
 
   constructor(
-    private propriedadeService: PropriedadeService,
+    private propertyService: PropertyService,
     private leadService: LeadService
   ) {}
 
   ngOnInit(): void {
     this.loadLeads();
+  }
 
-    if (this.propriedade) {
-      this.formData = { ...this.propriedade };
-      if (this.propriedade.geometria) {
-        this.geometriaJson = JSON.stringify(
-          this.propriedade.geometria,
-          null,
-          2
-        );
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['property']) {
+      if (this.property) {
+        this.formData = { ...this.property };
+      } else {
+        this.formData = {
+          leadId: '',
+          culture: '',
+          areaHectares: 0,
+        };
       }
     }
   }
@@ -66,42 +66,30 @@ export class PropertyFormComponent implements OnInit {
         this.leads = data;
       },
       error: (error) => {
-        console.error('Erro ao carregar leads:', error);
+        console.error('Error loading leads:', error);
       },
     });
   }
 
   onSubmit(): void {
-    // Parse geometria JSON
-    if (this.geometriaJson) {
-      try {
-        this.formData.geometria = JSON.parse(this.geometriaJson);
-      } catch (e) {
-        console.error('JSON inválido para geometria');
-        return;
-      }
-    }
-
-    if (this.propriedade?.id) {
-      // Atualizar
-      this.propriedadeService
-        .updatePropriedade(this.propriedade.id, this.formData)
+    if (this.property?.id) {
+      this.propertyService
+        .updateProperty(this.property.id, this.formData)
         .subscribe({
           next: () => {
             this.save.emit();
           },
           error: (error) => {
-            console.error('Erro ao atualizar propriedade:', error);
+            console.error('Error updating property:', error);
           },
         });
     } else {
-      // Criar
-      this.propriedadeService.createPropriedade(this.formData).subscribe({
+      this.propertyService.createProperty(this.formData).subscribe({
         next: () => {
           this.save.emit();
         },
         error: (error) => {
-          console.error('Erro ao criar propriedade:', error);
+          console.error('Error creating property:', error);
         },
       });
     }

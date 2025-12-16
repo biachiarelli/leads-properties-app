@@ -24,14 +24,6 @@
   --border-radius: 6px;
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  color: var(--text-color);
-  background-color: var(--surface-50);
-  margin: 0;
-  padding: 0;
-}
-
 /* Global Styles */
 * {
   margin: 0;
@@ -40,8 +32,16 @@ body {
 }
 
 body {
-  font-family: var(--font-family);
-  background-color: #f8f9fa;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-color);
+  background-color: var(--surface-50);
+  margin: 0;
+  padding: 0;
+}
+
+/* Apply system font to all PrimeNG components */
+.p-component {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
 
 .container {
@@ -64,4 +64,52 @@ body {
   border-radius: 4px;
   font-size: 0.75rem;
   font-weight: bold;
+}
+
+/* ConfirmDialog Customization */
+.p-confirmdialog {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+
+  .p-dialog-header {
+    font-family: inherit !important;
+  }
+
+  .p-dialog-content {
+    font-family: inherit !important;
+  }
+
+  .p-confirmdialog-message {
+    font-family: inherit !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .p-button.p-confirmdialog-reject-button {
+    background-color: transparent !important;
+    color: var(--primary-color) !important;
+    border: 1px solid var(--primary-color) !important;
+
+    &:hover {
+      background-color: rgba(59, 130, 246, 0.04) !important;
+      border-color: var(--primary-color) !important;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25) !important;
+    }
+  }
+
+  .p-button.p-confirmdialog-accept-button {
+    background-color: #dc2626 !important;
+    border-color: #dc2626 !important;
+    color: white !important;
+
+    &:hover {
+      background-color: #b91c1c !important;
+      border-color: #b91c1c !important;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba(220, 38, 38, 0.25) !important;
+    }
+  }
 }

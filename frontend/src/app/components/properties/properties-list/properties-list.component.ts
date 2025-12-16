@@ -40,8 +40,8 @@ export class PropertiesListComponent implements OnInit {
   displayDialog = false;
   selectedProperty: Property | null = null;
 
-  filterCultura = '';
-  filterAreaMinima: number | null = null;
+  filterCulture = '';
+  filterMinArea: number | null = null;
 
   constructor(
     private propertyService: PropertyService,
@@ -57,8 +57,8 @@ export class PropertiesListComponent implements OnInit {
     this.loading = true;
     const filters: any = {};
 
-    if (this.filterCultura) filters.cultura = this.filterCultura;
-    if (this.filterAreaMinima) filters.areaMinima = this.filterAreaMinima;
+    if (this.filterCulture) filters.culture = this.filterCulture;
+    if (this.filterMinArea) filters.minArea = this.filterMinArea;
 
     this.propertyService.getProperties(filters).subscribe({
       next: (data) => {
@@ -89,9 +89,10 @@ export class PropertiesListComponent implements OnInit {
 
   deleteProperty(property: Property): void {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete this property?',
-      header: 'Confirm Deletion',
-      icon: 'pi pi-exclamation-triangle',
+      message: `Tem certeza que deseja excluir a propriedade?`,
+      header: 'Confirmar Exclusão',
+      acceptLabel: 'Sim, excluir',
+      rejectLabel: 'Cancelar',
       accept: () => {
         if (property.id) {
           this.propertyService.deleteProperty(property.id).subscribe({
@@ -99,7 +100,7 @@ export class PropertiesListComponent implements OnInit {
               this.messageService.add({
                 severity: 'success',
                 summary: 'Success',
-                detail: 'Property deleted successfully',
+                detail: 'Propriedade excluída com sucesso',
               });
               this.loadProperties();
             },
@@ -108,7 +109,7 @@ export class PropertiesListComponent implements OnInit {
               this.messageService.add({
                 severity: 'error',
                 summary: 'Error',
-                detail: 'Error deleting property',
+                detail: 'Erro ao excluir propriedade',
               });
             },
           });

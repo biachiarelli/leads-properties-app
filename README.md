@@ -51,7 +51,7 @@ Sistema completo de CRUD para gerenciamento de leads e propriedades rurais com d
 docker-compose up -d
 ```
 
-### 2. Backend (NestJS) - em outro terminal
+### 2. Backend (NestJS)
 ```bash
 cd backend
 npm install
@@ -60,7 +60,7 @@ npm run start:dev
 
 O backend estará disponível em: **http://localhost:3000**
 
-### 3. Frontend (Angular) - em outro terminal
+### 3. Frontend (Angular)
 ```bash
 cd frontend
 npm install --legacy-peer-deps

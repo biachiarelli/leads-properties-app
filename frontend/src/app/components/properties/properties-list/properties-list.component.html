@@ -1,28 +1,28 @@
 <div class="container">
   <div class="card-header">
-    <h1>Propriedades Rurais</h1>
+    <h1>Gerenciamento de Propriedades</h1>
     <p-button
-      label="Nova Propriedade"
+      label="Nova propriedade"
       icon="pi pi-plus"
       (onClick)="openNew()"
     ></p-button>
   </div>
 
-  <!-- Filtros -->
+  <!-- Filters -->
   <div class="grid mb-4">
     <div class="col-12 md:col-6">
         <input
           pInputText
           type="text"
-          [(ngModel)]="filterCultura"
+          [(ngModel)]="filterCulture"
           (input)="loadProperties()"
-          placeholder="Buscar por cultura"
+          placeholder="Pesquisar por cultura"
           class="w-full"
         />
     </div>
     <div class="col-12 md:col-6">
       <p-inputNumber
-        [(ngModel)]="filterAreaMinima"
+        [(ngModel)]="filterMinArea"
         (onInput)="loadProperties()"
         placeholder="Área mínima (hectares)"
         [min]="0"
@@ -32,14 +32,14 @@
     </div>
   </div>
 
-  <!-- Tabela -->
+  <!-- Table -->
   <p-table
     [value]="properties"
     [loading]="loading"
     [paginator]="true"
     [rows]="10"
     [showCurrentPageReport]="true"
-    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} properties"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} propriedades"
     [tableStyle]="{ 'min-width': '50rem' }"
   >
     <ng-template pTemplate="header">
@@ -47,23 +47,23 @@
         <th>Lead</th>
         <th>Cultura</th>
         <th>Área (ha)</th>
-        <th>Prioridade</th>
+        <th>Prioidade</th>
         <th>Ações</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-propriedade>
+    <ng-template pTemplate="body" let-property>
       <tr>
-        <td>{{ propriedade.lead?.nome || '-' }}</td>
-        <td>{{ propriedade.cultura }}</td>
-        <td>{{ propriedade.areaHectares | number : '1.2-2' }}</td>
+        <td>{{ property.lead?.nome || '-' }}</td>
+        <td>{{ property.culture }}</td>
+        <td>{{ property.areaHectares | number : '1.2-2' }}</td>
         <td>
           <p-tag
-            *ngIf="isPriority(propriedade.areaHectares)"
+            *ngIf="isPriority(property.areaHectares)"
             severity="warn"
-            value="PRIORITÁRIA"
+            value="Prioridade"
             icon="pi pi-star"
           ></p-tag>
-          <span *ngIf="!isPriority(propriedade.areaHectares)">-</span>
+          <span *ngIf="!isPriority(property.areaHectares)">Normal</span>
         </td>
         <td>
           <p-button
@@ -71,39 +71,39 @@
             [rounded]="true"
             [text]="true"
             severity="info"
-            (onClick)="editProperty(propriedade)"
-            pTooltip="Editar"
+            (onClick)="editProperty(property)"
+            pTooltip="Edit"
           ></p-button>
           <p-button
             icon="pi pi-trash"
             [rounded]="true"
             [text]="true"
             severity="danger"
-            (onClick)="deleteProperty(propriedade)"
-            pTooltip="Excluir"
+            (onClick)="deleteProperty(property)"
+            pTooltip="Delete"
           ></p-button>
         </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="5" class="text-center">Nenhuma propriedade encontrada</td>
+        <td colspan="5" class="text-center">No properties found</td>
       </tr>
     </ng-template>
   </p-table>
 
-  <!-- Dialog de Formulário -->
+  <!-- Form Dialog -->
   <p-dialog
     [(visible)]="displayDialog"
     [header]="
-      selectedProperty ? 'Editar Propriedade' : 'Nova Propriedade'
+      selectedProperty ? 'Editar propriedade' : 'Nova propriedade'
     "
     [modal]="true"
     [style]="{ width: '50vw' }"
     [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
   >
     <app-property-form
-      [propriedade]="selectedProperty"
+      [property]="selectedProperty"
       (save)="onSave()"
       (cancel)="onCancel()"
     ></app-property-form>
