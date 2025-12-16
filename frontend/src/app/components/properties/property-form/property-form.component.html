@@ -1,0 +1,80 @@
+<form (ngSubmit)="onSubmit()">
+  <div class="grid">
+    <div class="col-12">
+      <label for="leadId" class="block mb-2">Lead *</label>
+      <p-select
+        id="leadId"
+        [options]="leads"
+        [(ngModel)]="formData.leadId"
+        name="leadId"
+        optionLabel="nome"
+        optionValue="id"
+        placeholder="Selecione um lead"
+        required
+        class="w-full"
+        [filter]="true"
+        filterBy="nome"
+      />
+    </div>
+
+    <div class="col-12 md:col-6">
+      <label for="cultura" class="block mb-2">Cultura *</label>
+      <input
+        id="cultura"
+        type="text"
+        pInputText
+        [(ngModel)]="formData.cultura"
+        name="cultura"
+        placeholder="Ex: Soja, Milho, Café"
+        required
+        class="w-full"
+      />
+    </div>
+
+    <div class="col-12 md:col-6">
+      <label for="areaHectares" class="block mb-2">Área (hectares) *</label>
+      <p-inputNumber
+        id="areaHectares"
+        [(ngModel)]="formData.areaHectares"
+        name="areaHectares"
+        [min]="0"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        suffix=" ha"
+        required
+        class="w-full"
+      ></p-inputNumber>
+    </div>
+
+    <div class="col-12">
+      <label for="geometria" class="block mb-2">
+        Geometria (GeoJSON)
+        <small class="text-gray-500 ml-2">(Opcional)</small>
+      </label>
+      <textarea
+        id="geometria"
+        pTextarea
+        [(ngModel)]="geometriaJson"
+        name="geometria"
+        rows="6"
+        placeholder='{"type": "Point", "coordinates": [-47.123, -23.456]}'
+        class="w-full"
+      ></textarea>
+      <small class="text-gray-500">
+        Exemplo de ponto: {{ '{' }}"type": "Point", "coordinates": [longitude,
+        latitude]{{ '}' }}
+      </small>
+    </div>
+
+    <div class="col-12 flex justify-content-end gap-2">
+      <p-button
+        label="Cancelar"
+        severity="secondary"
+        (onClick)="onCancel()"
+        type="button"
+      ></p-button>
+      <p-button label="Salvar" type="submit"></p-button>
+    </div>
+  </div>
+</form>
+
