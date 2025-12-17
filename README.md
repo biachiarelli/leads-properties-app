@@ -22,16 +22,14 @@ Sistema completo de CRUD para gerenciamento de leads e propriedades rurais com d
 - ✅ Listagem com filtros avançados
 - ✅ Edição de informações
 - ✅ Remoção de leads
-- ✅ Campos: nome, CPF, status, comentários, município
 
 ### Propriedades Rurais
 - ✅ Cadastro de propriedades vinculadas a leads
 - ✅ Listagem com filtros
 - ✅ Edição e remoção
-- ✅ Campos: cultura, área (hectares), geometria (GeoJSON)
 
 ### Dashboard
-- 📊 Total de leads
+- 📊 Total de leads e leads prioritários
 - 📊 Leads por status
 - 📊 Leads por município
 - ⭐ Indicador visual de leads prioritários (área > 100 hectares)
@@ -55,7 +53,7 @@ docker-compose up -d
 ```bash
 cd backend
 npm install
-npm run start:dev
+npm start
 ```
 
 O backend estará disponível em: **http://localhost:3000**

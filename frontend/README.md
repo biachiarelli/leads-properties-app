@@ -1,14 +1,32 @@
-# Frontend
+# Leads App - Sistema de Gestão de Leads e Propriedades Rurais
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.3.
+Aplicação web desenvolvida em Angular para gerenciamento de leads e propriedades rurais, com dashboard interativo.
 
-## Development server
+## 🚀 Tecnologias
 
-To start a local development server, run:
+- Angular 17+
+- PrimeNG
+- RxJS
 
+## 🛠️ Instalação e Execução
+
+### Pré-requisitos
+- npm ou yarn
+
+### 3. Frontend (Angular)
 ```bash
+cd frontend
 npm install --legacy-peer-deps
 npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+O frontend estará disponível em: **http://localhost:4200**
+
+
+
+## 🧪 Testes
+```bash
+cd frontend
+npm run test
+```
+
